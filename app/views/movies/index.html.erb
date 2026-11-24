@@ -1,4 +1,4 @@
 <%= @error %>
 <% @movies.each do |movie| %>
-  <h2><%= link_to "bookmark it!", movie_bookmarks_path(@bookmark) %> <%= movie.title %></h2>
+  <h2><%= link_to "bookmark it!", movie_bookmarks_path(movie.id) %> <%= movie.title %></h2>
 <% end %>
