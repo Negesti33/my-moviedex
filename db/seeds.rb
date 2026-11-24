@@ -7,3 +7,16 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+require "json"
+require "open-uri"
+
+Movie.destroy_all
+
+api_url = "https://tmdb.lewagon.com/movie/top_rated"
+serialized_response = URI.parse(api_url).read
+response = JSON.parse(serialized_response)
+datas = response["results"]
+
+datas.each do |movie|
+  Movie.create(title: movie["title"], api_endpoint: movie["id"])
+end
