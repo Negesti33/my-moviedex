@@ -36,7 +36,14 @@
 
 # Ignore .env file containing credentials.
 .env*
+!.env*.example
 
 # Ignore Mac and Linux file system files
 *.swp
 .DS_Store
+
+### Editors & OS files ###
+.vscode/
+Thumbs.db
+desktop.ini
+__stuff/
