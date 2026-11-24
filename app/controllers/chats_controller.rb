@@ -1,0 +1,32 @@
+class ChatsController < ApplicationController
+  def index
+    @chats = Chat.all.where(user: current_user)
+  end
+
+  def show
+    @chat = current_user.chats.find(params[:id])
+    @message = Message.new
+  end
+
+  def create
+    @chat = Chat.new(chat_params)
+    @chat.user = current_user
+    if @chat.save
+      redirect_to index_path(@chats)
+    else
+      render :index, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @chat = current_user.chats.find(params[:id])
+    @chat.destroy
+    window.location.reload
+  end
+
+  private
+
+  def chat_params
+    params.require(:chat).permit(:title)
+  end
+end
