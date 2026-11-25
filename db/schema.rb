@@ -10,18 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_141544) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_145838) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
-  create_table "bookmarks", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "movie_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["movie_id"], name: "index_bookmarks_on_movie_id"
-    t.index ["user_id"], name: "index_bookmarks_on_user_id"
-  end
 
   create_table "chats", force: :cascade do |t|
     t.string "title"
@@ -47,6 +38,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_141544) do
     t.datetime "updated_at", null: false
     t.boolean "seen", default: false, null: false
     t.boolean "bookmarked", default: false, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_movies_on_user_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -227,14 +220,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_141544) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "preferences"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "bookmarks", "movies"
-  add_foreign_key "bookmarks", "users"
   add_foreign_key "chats", "users"
   add_foreign_key "messages", "chats"
+  add_foreign_key "movies", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
