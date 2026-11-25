@@ -18,5 +18,5 @@ response = JSON.parse(serialized_response)
 datas = response["results"]
 
 datas.each do |movie|
-  Movie.create(title: movie["title"], api_endpoint: movie["id"])
+  Movie.create(title: movie["title"], api_endpoint: movie["id"], user_id: 1)
 end
