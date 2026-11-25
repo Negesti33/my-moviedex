@@ -9,10 +9,11 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @chat = Chat.new(chat_params)
+    @chat = Chat.new
     @chat.user = current_user
+    @chat.title = "none"
     if @chat.save
-      redirect_to index_path(@chats)
+      redirect_to chat_path(@chat)
     else
       render :index, status: :unprocessable_entity
     end
@@ -22,11 +23,5 @@ class ChatsController < ApplicationController
     @chat = current_user.chats.find(params[:id])
     @chat.destroy
     window.location.reload
-  end
-
-  private
-
-  def chat_params
-    params.require(:chat).permit(:title)
   end
 end
