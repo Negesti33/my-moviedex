@@ -11,3 +11,17 @@
       params: { recommendation: true },
       class: "btn-gradient" %>
 </section>
+
+<section class="home-carousel">
+  <h2 class="home-carousel__title">Explore tout l'univers du cinéma</h2>
+
+  <div class="home-carousel__track" data-controller="carousel">
+    <%= image_tag "posters/grand-budapest-hotel.jpg", alt: "The Grand Budapest Hotel", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/inception.jpg", alt: "Inception", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/interstellar.jpg", alt: "Interstellar", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/dune.jpg", alt: "Dune", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/la-la-land.jpg", alt: "La La Land", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/the-batman.jpg", alt: "The Batman", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+    <%= image_tag "posters/matrix.jpg", alt: "Matrix", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+  </div>
+</section>
