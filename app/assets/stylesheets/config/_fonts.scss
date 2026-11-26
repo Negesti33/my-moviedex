@@ -1,13 +1,13 @@
-// Import de la police Outfit depuis Google Fonts (maquette Figma)
+// Police Outfit
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
 
 // Polices du texte et des titres
 $body-font: "Outfit", "Helvetica", "sans-serif";
 $headers-font: "Outfit", "Helvetica", "sans-serif";
 
-// Échelle typographique (maquette desktop 1440px)
-$fs-display: 88px;   // H1 hero
-$fs-section: 50px;   // Titres de section
-$fs-nav: 40px;       // Logo + liens navbar
-$fs-lead: 20px;      // Sous-titre + boutons
-$fs-badge: 12px;     // Badge
+// Tailles de texte
+$fs-display: 88px;   // grand titre de l'accueil
+$fs-section: 50px;   // titres de section
+$fs-nav: 40px;       // navbar
+$fs-lead: 20px;      // sous-titre et boutons
+$fs-badge: 12px;     // badge
