@@ -1,4 +1,7 @@
 class MessagesController < ApplicationController
+  require "json"
+  require "open-uri"
+
   SYSTEM_PROMPT = "
    Vous êtes un expert en cinéma.
     En tant que Moviedex, un assistant personnalisé
@@ -43,25 +46,11 @@ class MessagesController < ApplicationController
 
     if @message.save
       ask_chat_with_instruction
-      # précédemment écrit en binome avec Francois :
-      # ruby_llm_chat = RubyLLM.chat
-      # response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
-      # Message.create(role: "assistant", content: response.content, chat: @chat)
-      ask_chat_with_instruction
-      # précédemment écrit en binome avec Francois :
-      # ruby_llm_chat = RubyLLM.chat
-      # response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
-      # Message.create(role: "assistant", content: response.content, chat: @chat)
       redirect_to chat_path(@chat)
     else
       render "chats/show", status: :unprocessable_entity
     end
   end
-
-  # def destroy
-  # end = à confirmer ensemble la conservation de cette methode et sa route !
-  # def destroy
-  # end = à confirmer ensemble la conservation de cette methode et sa route !
 
   private
 
@@ -87,42 +76,42 @@ class MessagesController < ApplicationController
 
   response = ruby_llm_chat.ask(@message.content)
 
-  # Je transforme response.content en un hash
+  # Transformer la réponse du LLM en Hash
   response_hash = JSON.parse(response.content)
 
-  # Je récupère les films recommandés
-  @movies = response_hash["movies"] || []
+  # Récupérer les films recommandés
+  movies = response_hash["movies"] || []
 
-  # Je sauvegarde uniquement la réponse textuelle du LLM
+  # Appeler l'API pour chaque film
+  movies.each do |movie|
+
+    title = URI.encode_www_form_component(movie["title"])
+    year = movie["year"]
+
+    api_url = "https://tmdb.lewagon.com/search/movie?query=#{title}&year=#{year}"
+
+    serialized_response = URI.parse(api_url).read
+    api_response = JSON.parse(serialized_response)
+
+    movie_data = api_response["results"].first
+
+    if movie_data
+      movie["poster_path"] = movie_data["poster_path"]
+      movie["overview"] = movie_data["overview"]
+      movie["vote_average"] = movie_data["vote_average"]
+      movie["api_endpoint"] = movie_data["id"]
+      movie["release_date"] = movie_data["release_date"]
+    end
+  end
+
+  # Sauvegarder la réponse enrichie
   Message.create!(
     role: "assistant",
-    content: response_hash["answer"],
+    content: response_hash.to_json,
     chat: @chat
   )
-  # assistant_message.movies << saved_movie
-  #  vérifier avant les associations avant d'intégrer la ligne précédente
   end
 end
 
-#   def ask_chat_with_instruction
-#     ruby_llm_chat = RubyLLM.chat
-#     ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
-#     @chat.messages.order(:created_at).each do |message|
-#       ruby_llm_chat.add_message(
-#         role: message.role.to_sym,
-#         content: message.content
-#       )
-#     end
-
-#     response = ruby_llm_chat.ask(@message.content)
-#     # je transforme response.content en un hash
-#     # si la réponse contient la clé movies, alors je vais sauvegarder les movies en DB
-#     # j'affiche les movies dans le chat + la réponse du LLM
-#     # sinon on affiche seulement la réponse du llm en markdown
-#     Message.create!(
-#       role: "assistant",
-#       content: response.content, # il faut remplacer le response.content par le nom_du_hash [:answer]
-#       chat: @chat
-#     )
-#   end
-# end
+# movie à ajoute = un button to dans la carte du résultat de la disscuss avec l'API
+# à envoyer en parametre avec les données de mon movie en appelant la méthode create de movie
