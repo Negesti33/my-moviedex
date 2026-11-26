@@ -1,5 +1,6 @@
 <h1 id="chat_title"><%= @chat.title %></h1>
 
+
 <div id="messages">
   <% @chat.messages.each do |message| %>
     <% if message.role == "user" %>
@@ -22,5 +23,12 @@
   <%= simple_form_for [@chat, @message] do |f| %>
     <%= f.input :content, label: "Ask a question", required: true, placeholder: "What could I watch tonight alone in my bed?" %>
     <%= f.button :submit, 'Ask LLM', class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<div id="change_title">
+  <%= simple_form_for @chat do |f| %>
+    <%= f.input :title, placeholder: "", class: "$gray-500" %>
+    <%= f.button :submit, 'Changer le titre de cette conversation', class: 'btn btn-primary' %>
   <% end %>
 </div>
