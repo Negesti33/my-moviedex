@@ -1,6 +1,24 @@
-// Define variables for your color scheme
+// My Moviedex — palette issue de la maquette Figma
 
-// For example:
+// Fonds
+$mm-bg: #101014;           // fond général
+$mm-surface: #211C36;      // fond du badge / cartes sombres
+
+// Textes
+$mm-white: #FFFFFF;
+$mm-text-muted: #C1BECD;   // sous-titres, titres de section
+$mm-lilac: #C4BDF2;        // texte du badge
+
+// Accents
+$mm-violet: #7662E8;
+$mm-cyan: #49BDD5;
+$mm-gradient: linear-gradient(90deg, $mm-cyan 0%, $mm-violet 100%);
+
+// Halos du hero
+$mm-glow-wine: rgba(110, 30, 55, 0.75);
+$mm-glow-indigo: rgba(70, 45, 160, 0.75);
+
+// Couleurs Bootstrap du template (conservées)
 $red: #FD1015;
 $blue: #0D6EFD;
 $yellow: #FFC65A;
