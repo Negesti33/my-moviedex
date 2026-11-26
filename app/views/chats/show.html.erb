@@ -1,4 +1,3 @@
-<h1 id="chat_title"><%= @chat.title %></h1>
 
 
 <div id="messages">
@@ -8,22 +7,70 @@
         <div class="bg-white px-3 pb-0 pt-3 rounded-pill">
           <%= raw(render_markdown(message.content)) %>
         </div>
-      </div>
-    <% elsif message.role == "assistant" %>
-      <div class="d-flex justify-content-start mb-5">
-        <div class="px-3 pb-0 pt-3">
-          <%= raw(render_markdown(message.content)) %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
 
-<div id="new_message_container">
-  <%= simple_form_for [@chat, @message] do |f| %>
-    <%= f.input :content, label: "Ask a question", required: true, placeholder: "What could I watch tonight alone in my bed?" %>
-    <%= f.button :submit, 'Ask LLM', class: 'btn btn-primary' %>
-  <% end %>
+      <% elsif message.role == "assistant" %>
+
+        <div class="mb-5">
+
+          <div class="px-3 pb-0 pt-3">
+            <%= sanitize(render_markdown(message.content)) %>
+          </div>
+
+          <% if message.respond_to?(:movies) && message.movies.any? %>
+
+            <div class="row g-3 mt-2">
+
+              <% message.movies.each do |movie| %>
+
+                <div class="col-12 col-md-4">
+
+                  <div class="card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                      <h5 class="card-title">
+                        <%= movie.title %>
+                      </h5>
+
+                      <p class="card-text">
+                        <%= movie.year %>
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    <% end %>
+
+  </div>
+
+  <div id="new_message_container">
+
+    <%= simple_form_for [@chat, @message] do |f| %>
+
+      <%= f.input :content,
+          label: "Posez votre question",
+          required: true,
+          placeholder: "Quel film pourrais-je regarder ce soir ?" %>
+
+      <%= f.button :submit, "Envoyer", class: "btn btn-primary" %>
+
+    <% end %>
+
+  </div>
+
 </div>
 
 <div id="change_title">

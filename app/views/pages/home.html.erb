@@ -1,2 +1,5 @@
-<h1>Pages#home</h1>
+<h1>My Moviedex</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
+<%= button_to "Trouver mon prochain film", chats_path,  method: :post,
+    params: { recommendation: true },
+    class: "btn btn-primary" %>
