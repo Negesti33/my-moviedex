@@ -16,8 +16,5 @@ Rails.application.routes.draw do
   resources :chats, only: [:index, :show, :create, :destroy] do
     resources :messages, only: [:create, :destroy]
   end
-  resources :movies, only: [:index, :show, :create] do
-    resources :bookmarks, only: :create
-  end
-  resources :bookmarks, only: :destroy
+  resources :movies, except: [:new, :edit, :update]
 end

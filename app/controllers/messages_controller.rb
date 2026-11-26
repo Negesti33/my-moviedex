@@ -33,6 +33,7 @@ class MessagesController < ApplicationController
     Si une disponibilité ne peut pas être vérifiée, précise-le.
   "
 
+
   def create
     @chat = current_user.chats.find(params[:chat_id])
 
@@ -46,12 +47,19 @@ class MessagesController < ApplicationController
       # ruby_llm_chat = RubyLLM.chat
       # response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
       # Message.create(role: "assistant", content: response.content, chat: @chat)
+      ask_chat_with_instruction
+      # précédemment écrit en binome avec Francois :
+      # ruby_llm_chat = RubyLLM.chat
+      # response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
+      # Message.create(role: "assistant", content: response.content, chat: @chat)
       redirect_to chat_path(@chat)
     else
       render "chats/show", status: :unprocessable_entity
     end
   end
 
+  # def destroy
+  # end = à confirmer ensemble la conservation de cette methode et sa route !
   # def destroy
   # end = à confirmer ensemble la conservation de cette methode et sa route !
 

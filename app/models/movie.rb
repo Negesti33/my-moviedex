@@ -1,5 +1,5 @@
 class Movie < ApplicationRecord
-  has_many :bookmarks
+  belongs_to :user
 
   validates :title, :api_endpoint, presence: true
 end
