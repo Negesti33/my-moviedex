@@ -17,4 +17,5 @@ Rails.application.routes.draw do
     resources :messages, only: [:create, :destroy]
   end
   resources :movies, except: [:new, :edit, :update]
+  post "set_position", to: "positions#create"
 end

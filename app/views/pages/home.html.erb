@@ -3,3 +3,17 @@
 <%= button_to "Trouver mon prochain film", chats_path,  method: :post,
     params: { recommendation: true },
     class: "btn btn-primary" %>
+
+<div data-controller="geolocation"
+     data-geolocation-url-value="<%= set_position_path %>"
+     class="mb-3">
+
+  <button type="button"
+          data-geolocation-target="button"
+          data-action="geolocation#locate"
+          class="btn btn-primary">
+    <i class="bi bi-geo-alt"></i> Utiliser ma géolocalisation
+  </button>
+
+  <span data-geolocation-target="status" class="ms-2 text-muted"></span>
+</div>
