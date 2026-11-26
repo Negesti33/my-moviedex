@@ -11,7 +11,7 @@ class ChatsController < ApplicationController
   def create
     @chat = Chat.new
     @chat.user = current_user
-    @chat.title = "none"
+    @chat.title = "Ma recherche du #{Time.now.strftime('%d %m %Y à %H:%M')}"
     if @chat.save
       redirect_to chat_path(@chat)
     else
@@ -19,9 +19,25 @@ class ChatsController < ApplicationController
     end
   end
 
+  def update
+    @chat = current_user.chats.find(params[:id])
+    @chat.title = chat_params[:title]
+    if @chat.save
+      redirect_to chat_path(@chat)
+    else
+      render :show, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @chat = current_user.chats.find(params[:id])
     @chat.destroy
     window.location.reload
+  end
+
+  private
+
+  def chat_params
+    params.require(:chat).permit(:title)
   end
 end
