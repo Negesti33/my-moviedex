@@ -1,0 +1,17 @@
+// Badge pilule (maquette : "✧ AI-POWERED MOVIE DISCOVERY", 320×34)
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  height: 34px;
+  padding: 0 20px;
+  background: $mm-surface;
+  border: 1px solid $mm-violet;
+  border-radius: 30px;
+  color: $mm-lilac;
+  font-size: $fs-badge;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}

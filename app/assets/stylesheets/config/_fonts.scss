@@ -1,16 +1,13 @@
-// Import Google fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Work+Sans:400,700&display=swap');
+// Import de la police Outfit depuis Google Fonts (maquette Figma)
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
 
-// Define fonts for body and headers
-$body-font: "Work Sans", "Helvetica", "sans-serif";
-$headers-font: "Nunito", "Helvetica", "sans-serif";
+// Polices du texte et des titres
+$body-font: "Outfit", "Helvetica", "sans-serif";
+$headers-font: "Outfit", "Helvetica", "sans-serif";
 
-// To use a font file (.woff) uncomment following lines
-// @font-face {
-//   font-family: "Font Name";
-//   src: font-url('FontFile.eot');
-//   src: font-url('FontFile.eot?#iefix') format('embedded-opentype'),
-//        font-url('FontFile.woff') format('woff'),
-//        font-url('FontFile.ttf') format('truetype')
-// }
-// $my-font: "Font Name";
+// Échelle typographique (maquette desktop 1440px)
+$fs-display: 88px;   // H1 hero
+$fs-section: 50px;   // Titres de section
+$fs-nav: 40px;       // Logo + liens navbar
+$fs-lead: 20px;      // Sous-titre + boutons
+$fs-badge: 12px;     // Badge

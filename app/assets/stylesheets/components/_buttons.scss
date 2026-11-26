@@ -1,0 +1,27 @@
+// Boutons My Moviedex
+
+// Bouton principal dégradé (maquette : "Meet your AI assistant →", 280×56)
+.btn-gradient {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  height: 56px;
+  padding: 0 32px;
+  border: 0;
+  border-radius: 30px;
+  background: $mm-gradient;
+  color: $mm-white;
+  font-family: $body-font;
+  font-size: $fs-lead;
+  font-weight: 500;
+  letter-spacing: .01em;
+  transition: transform .2s ease, box-shadow .2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: $mm-white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba($mm-violet, .35);
+  }
+}

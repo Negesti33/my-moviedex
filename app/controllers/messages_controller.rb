@@ -2,6 +2,9 @@ class MessagesController < ApplicationController
   require "json"
   require "open-uri"
 
+  require "json"
+  require "open-uri"
+
   SYSTEM_PROMPT = "
    Vous êtes un expert en cinéma.
     En tant que Moviedex, un assistant personnalisé
@@ -36,7 +39,6 @@ class MessagesController < ApplicationController
     Si une disponibilité ne peut pas être vérifiée, précise-le.
   "
 
-
   def create
     @chat = current_user.chats.find(params[:chat_id])
 
@@ -63,18 +65,18 @@ class MessagesController < ApplicationController
   end
 
   def ask_chat_with_instruction
-  ruby_llm_chat = RubyLLM.chat
+    ruby_llm_chat = RubyLLM.chat
 
-  ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
+    ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
 
-  @chat.messages.where.not(id: @message.id).order(:created_at).each do |message|
-    ruby_llm_chat.add_message(
-      role: message.role.to_sym,
-      content: message.content
-    )
-  end
+    @chat.messages.where.not(id: @message.id).order(:created_at).each do |message|
+      ruby_llm_chat.add_message(
+        role: message.role.to_sym,
+        content: message.content
+      )
+    end
 
-  response = ruby_llm_chat.ask(@message.content)
+    response = ruby_llm_chat.ask(@message.content)
 
   # Transformer la réponse du LLM en Hash
   response_hash = JSON.parse(response.content)
@@ -113,5 +115,7 @@ class MessagesController < ApplicationController
   end
 end
 
+# movie à ajoute = un button to dans la carte du résultat de la disscuss avec l'API
+# à envoyer en parametre avec les données de mon movie en appelant la méthode create de movie
 # movie à ajoute = un button to dans la carte du résultat de la disscuss avec l'API
 # à envoyer en parametre avec les données de mon movie en appelant la méthode create de movie
