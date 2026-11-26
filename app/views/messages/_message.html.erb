@@ -1,0 +1,63 @@
+<% if message.role == "user" %>
+  <div class="d-flex justify-content-end mb-2">
+    <div class="bg-white px-3 pb-0 pt-3 rounded-pill">
+      <%= sanitize(render_markdown(message.content)) %>
+    </div>
+  </div>
+
+<% elsif message.role == "assistant" %>
+  <% response_hash = JSON.parse(message.content) rescue { "answer" => message.content } %>
+  <div class="mb-5">
+    <!-- Réponse textuelle du LLM -->
+    <div class="px-3 pt-3">
+      <%= sanitize(render_markdown(response_hash["answer"])) %>
+    </div>
+    <!-- Conteneur des films recommandés -->
+    <% if response_hash["movies"].present? %>
+      <div class="row g-4 mt-3">
+        <% response_hash["movies"].each do |movie| %>
+          <div class="col-12 col-md-4">
+            <div class="card movie-card h-100 shadow-sm border-0">
+              <!-- Affiche du film -->
+              <% if movie["poster_path"].present? %>
+                <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}",
+                  class: "card-img-top movie-poster", alt: movie["title"] %>
+                <% end %>
+                <div class="card-body">
+                      <!-- Titre -->
+                      <h5 class="card-title">
+                        <%= movie["title"] %>
+                      </h5>
+                      <!-- Année et note -->
+                      <div class="d-flex justify-content-between mb-3">
+                        <span class="text-secondary">
+                          <%= movie["year"] %>
+                        </span>
+                        <% if movie["vote_average"].present? %>
+                          <span class="text-warning">
+                            <i class="fa-solid fa-star"></i>
+                            <%= movie["vote_average"].round(1) %>/10
+                          </span>
+                        <% end %>
+                      </div>
+                      <!-- Synopsis -->
+                      <p class="card-text">
+                        <%= truncate(movie["overview"].to_s, length: 150) %>
+                      </p>
+                      <hr>
+                      <!-- Justification du LLM -->
+                      <h6>
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Pourquoi ce film ?
+                      </h6>
+                      <p class="card-text">
+                        <%= movie["reason"] %>
+                      </p>
+                    </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
