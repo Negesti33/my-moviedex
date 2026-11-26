@@ -11,7 +11,7 @@ class ChatsController < ApplicationController
   def create
     @chat = Chat.new
     @chat.user = current_user
-    @chat.title = "Ma recherche du #{Time.now.strftime('%d %m %Y à %H:%M')}"
+    @chat.title = "Ma recherche du #{Time.now.strftime('%d %B %Y à %H:%M')}"
     if @chat.save
       redirect_to chat_path(@chat)
     else
