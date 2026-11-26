@@ -1,4 +1,4 @@
-// Navbar My Moviedex (maquette Figma : NAVBAR, 80px de haut)
+// Navbar
 .navbar-moviedex {
   background: $mm-bg;
   min-height: 80px;
@@ -39,7 +39,7 @@
     &:focus { color: $mm-lilac; }
   }
 
-  // Bouton "Sign up" / "Log out" : pilule contour blanc
+  // Bouton Inscription / Déconnexion
   .nav-link-pill {
     border: 1px solid $mm-white;
     border-radius: 40px;
@@ -57,7 +57,7 @@
   }
 }
 
-// Écrans plus petits : on réduit la taille des textes
+// Tablette et téléphone
 @media (max-width: 1199.98px) {
   .navbar-moviedex {
     padding: 0 24px 0 8px;
