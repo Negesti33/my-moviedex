@@ -1,4 +1,62 @@
-<%= @error %>
-<% @movies.each do |movie| %>
-  <h2><%= movie.title %></h2>
-<% end %>
+
+<div class="container py-5">
+
+  <h1>
+    <i class="fa-solid fa-heart text-danger"></i>
+    Mes films
+  </h1>
+
+  <p class="text-secondary">
+    Retrouvez tous les films que vous avez enregistrés.
+  </p>
+
+  <% if @movies.empty? %>
+
+    <div class="text-center py-5">
+      <i class="fa-regular fa-heart fs-1"></i>
+      <p>Vous n'avez pas encore enregistré de film.</p>
+
+      <%= link_to "Découvrir des films",
+          chats_path,
+          class: "btn btn-primary" %>
+    </div>
+
+  <% else %>
+
+    <h2 class="mt-5 mb-4">
+      <i class="fa-solid fa-clock"></i>
+      À regarder
+    </h2>
+
+    <div class="row g-4">
+
+      <% @movies.where(seen: [false, nil]).each do |movie| %>
+
+        <div class="col-12 col-md-4">
+          <%= render "movies/movie", movie: movie %>
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <h2 class="mt-5 mb-4">
+      <i class="fa-solid fa-circle-check text-success"></i>
+      Déjà regardés
+    </h2>
+
+    <div class="row g-4">
+
+      <% @movies.where(seen: true).each do |movie| %>
+
+        <div class="col-12 col-md-4">
+          <%= render "movies/movie", movie: movie %>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
