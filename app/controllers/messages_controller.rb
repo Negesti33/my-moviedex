@@ -45,9 +45,18 @@ class MessagesController < ApplicationController
 
     if @message.save
       ask_chat_with_instruction
-      redirect_to chat_path(@chat)
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to chat_path(@chat) }
+      end
     else
-      render "chats/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("new_message_container", partial: "messages/form",
+                                                                            locals: { chat: @chat, message: @message })
+        end
+        format.html { render "chats/show", status: :unprocessable_entity }
+      end
     end
   end
 
@@ -63,36 +72,40 @@ class MessagesController < ApplicationController
 
   def ask_chat_with_instruction
     ruby_llm_chat = RubyLLM.chat
-
     ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
-
     @chat.messages.where.not(id: @message.id).order(:created_at).each do |message|
       ruby_llm_chat.add_message(
         role: message.role.to_sym,
         content: message.content
       )
     end
-
     response = ruby_llm_chat.ask(@message.content)
 
     # Transformer la réponse du LLM en Hash
     response_hash = JSON.parse(response.content)
 
     # Récupérer les films recommandés
-    movies = response_hash["movies"] || []
+    @movies = response_hash["movies"] || []
 
     # Appeler l'API pour chaque film
-    movies.each do |movie|
+    movie_cards
+
+    # Sauvegarder la réponse enrichie
+    @response = Message.create!(
+      role: "assistant",
+      content: response_hash.to_json,
+      chat: @chat
+    )
+  end
+
+  def movie_cards
+    @movies.each do |movie|
       title = URI.encode_www_form_component(movie["title"])
       year = movie["year"]
-
       api_url = "https://tmdb.lewagon.com/search/movie?query=#{title}&year=#{year}"
-
       serialized_response = URI.parse(api_url).read
       api_response = JSON.parse(serialized_response)
-
       movie_data = api_response["results"].first
-
       next unless movie_data
 
       movie["poster_path"] = movie_data["poster_path"]
@@ -101,13 +114,6 @@ class MessagesController < ApplicationController
       movie["api_endpoint"] = movie_data["id"]
       movie["release_date"] = movie_data["release_date"]
     end
-
-    # Sauvegarder la réponse enrichie
-    Message.create!(
-      role: "assistant",
-      content: response_hash.to_json,
-      chat: @chat
-    )
   end
 end
 
