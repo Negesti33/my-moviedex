@@ -98,7 +98,35 @@
                       <p class="card-text">
                         <%= movie["reason"] %>
                       </p>
+                      <% if movie["api_endpoint"].present? %>
 
+                      <% if current_user.movies.exists?(api_endpoint: movie["api_endpoint"]) %>
+
+                        <button class="btn btn-outline-danger w-100" disabled>
+                          <i class="fa-solid fa-heart"></i>
+                          Déjà enregistré
+                        </button>
+
+                      <% else %>
+
+                        <%= button_to movies_path,
+                            method: :post,
+                            params: {
+                              movie: {
+                                title: movie["title"],
+                                api_endpoint: movie["api_endpoint"]
+                              }
+                            },
+                            class: "btn btn-outline-danger w-100" do %>
+
+                          <i class="fa-regular fa-heart"></i>
+                          Ajouter à mes films
+
+                        <% end %>
+
+                      <% end %>
+
+                    <% end %>
                     </div>
 
                   </div>

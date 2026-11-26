@@ -1,0 +1,37 @@
+<div class="card shadow-sm h-100 border-0">
+
+  <div class="card-body">
+
+    <h5 class="card-title">
+      <%= movie.title %>
+    </h5>
+
+    <% if movie.seen? %>
+      <p class="text-success">
+        <i class="fa-solid fa-circle-check"></i>
+        Déjà regardé
+      </p>
+    <% else %>
+      <p class="text-secondary">
+        <i class="fa-solid fa-clock"></i>
+        À regarder
+      </p>
+    <% end %>
+
+    <hr>
+
+    <%= simple_form_for movie,
+    html: { data: { controller: "seen" } } do |f| %>
+
+  <%= f.input :seen,
+      as: :boolean,
+      label: "J'ai regardé ce film",
+      input_html: {
+        data: { action: "change->seen#update" }
+      } %>
+
+  <% end %>
+
+  </div>
+
+</div>

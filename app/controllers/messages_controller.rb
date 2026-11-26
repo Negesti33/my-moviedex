@@ -115,7 +115,7 @@ class MessagesController < ApplicationController
   end
 end
 
-# movie à ajoute = un button to dans la carte du résultat de la disscuss avec l'API
+# fonction movies, à ajouter : un button to dans la carte du résultat de la disscuss avec l'API
 # à envoyer en parametre avec les données de mon movie en appelant la méthode create de movie
 # movie à ajoute = un button to dans la carte du résultat de la disscuss avec l'API
 # à envoyer en parametre avec les données de mon movie en appelant la méthode create de movie
