@@ -36,7 +36,6 @@ class MessagesController < ApplicationController
     Si une disponibilité ne peut pas être vérifiée, précise-le.
   "
 
-
   def create
     @chat = current_user.chats.find(params[:chat_id])
 
@@ -63,53 +62,52 @@ class MessagesController < ApplicationController
   end
 
   def ask_chat_with_instruction
-  ruby_llm_chat = RubyLLM.chat
+    ruby_llm_chat = RubyLLM.chat
 
-  ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
+    ruby_llm_chat.with_instructions("#{SYSTEM_PROMPT}\n\n#{user_preferences_prompt}")
 
-  @chat.messages.where.not(id: @message.id).order(:created_at).each do |message|
-    ruby_llm_chat.add_message(
-      role: message.role.to_sym,
-      content: message.content
-    )
-  end
+    @chat.messages.where.not(id: @message.id).order(:created_at).each do |message|
+      ruby_llm_chat.add_message(
+        role: message.role.to_sym,
+        content: message.content
+      )
+    end
 
-  response = ruby_llm_chat.ask(@message.content)
+    response = ruby_llm_chat.ask(@message.content)
 
-  # Transformer la réponse du LLM en Hash
-  response_hash = JSON.parse(response.content)
+    # Transformer la réponse du LLM en Hash
+    response_hash = JSON.parse(response.content)
 
-  # Récupérer les films recommandés
-  movies = response_hash["movies"] || []
+    # Récupérer les films recommandés
+    movies = response_hash["movies"] || []
 
-  # Appeler l'API pour chaque film
-  movies.each do |movie|
+    # Appeler l'API pour chaque film
+    movies.each do |movie|
+      title = URI.encode_www_form_component(movie["title"])
+      year = movie["year"]
 
-    title = URI.encode_www_form_component(movie["title"])
-    year = movie["year"]
+      api_url = "https://tmdb.lewagon.com/search/movie?query=#{title}&year=#{year}"
 
-    api_url = "https://tmdb.lewagon.com/search/movie?query=#{title}&year=#{year}"
+      serialized_response = URI.parse(api_url).read
+      api_response = JSON.parse(serialized_response)
 
-    serialized_response = URI.parse(api_url).read
-    api_response = JSON.parse(serialized_response)
+      movie_data = api_response["results"].first
 
-    movie_data = api_response["results"].first
+      next unless movie_data
 
-    if movie_data
       movie["poster_path"] = movie_data["poster_path"]
       movie["overview"] = movie_data["overview"]
       movie["vote_average"] = movie_data["vote_average"]
       movie["api_endpoint"] = movie_data["id"]
       movie["release_date"] = movie_data["release_date"]
     end
-  end
 
-  # Sauvegarder la réponse enrichie
-  Message.create!(
-    role: "assistant",
-    content: response_hash.to_json,
-    chat: @chat
-  )
+    # Sauvegarder la réponse enrichie
+    Message.create!(
+      role: "assistant",
+      content: response_hash.to_json,
+      chat: @chat
+    )
   end
 end
 
