@@ -1,0 +1,9 @@
+// Bulle du message de l'utilisateur dans le chat
+// Le partial messages/_message.html.erb utilise .bg-white : avec le thème sombre
+// (texte blanc partout), le texte devenait invisible. On l'adapte au thème ici,
+// sans toucher au HTML.
+#messages .bg-white {
+  background: $mm-surface !important;
+  border: 1px solid rgba($mm-violet, .6);
+  color: $mm-white;
+}

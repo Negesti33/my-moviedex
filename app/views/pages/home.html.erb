@@ -1,5 +1,13 @@
-<h1>My Moviedex</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-<%= button_to "Trouver mon prochain film", chats_path,  method: :post,
-    params: { recommendation: true },
-    class: "btn btn-primary" %>
+<section class="home-hero">
+  <span class="badge-pill">✧ Tes films choisis par l'IA</span>
+
+  <h1 class="home-hero__title">Trouve ton prochain<br>film préféré.</h1>
+
+  <p class="home-hero__subtitle">
+    Moins chercher, plus regarder. Des films qui correspondent à tes goûts, à ton humeur et à ta personnalité.
+  </p>
+
+  <%= button_to "Parler à mon assistant IA →", chats_path, method: :post,
+      params: { recommendation: true },
+      class: "btn-gradient" %>
+</section>

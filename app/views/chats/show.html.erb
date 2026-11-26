@@ -14,157 +14,16 @@
     </p>
   </div>
 
-<div id="messages">
+  <div id="messages">
     <% @chat.messages.order(:created_at).each do |message| %>
-      <% if message.role == "user" %>
-        <div class="d-flex justify-content-end mb-2">
-          <div class="bg-white px-3 pb-0 pt-3 rounded-pill">
-            <%= sanitize(render_markdown(message.content)) %>
-          </div>
-        </div>
-
-      <% elsif message.role == "assistant" %>
-
-        <% response_hash = JSON.parse(message.content) rescue { "answer" => message.content } %>
-
-        <div class="mb-5">
-
-          <!-- Réponse textuelle du LLM -->
-
-          <div class="px-3 pt-3">
-            <%= sanitize(render_markdown(response_hash["answer"])) %>
-          </div>
-
-          <!-- Conteneur des films recommandés -->
-
-          <% if response_hash["movies"].present? %>
-
-            <div class="row g-4 mt-3">
-
-              <% response_hash["movies"].each do |movie| %>
-
-                <div class="col-12 col-md-4">
-
-                  <div class="card movie-card h-100 shadow-sm border-0">
-
-                    <!-- Affiche du film -->
-
-                    <% if movie["poster_path"].present? %>
-                      <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}",
-                          class: "card-img-top movie-poster",
-                          alt: movie["title"] %>
-                    <% end %>
-
-                    <div class="card-body">
-
-                      <!-- Titre -->
-
-                      <h5 class="card-title">
-                        <%= movie["title"] %>
-                      </h5>
-
-                      <!-- Année et note -->
-
-                      <div class="d-flex justify-content-between mb-3">
-
-                        <span class="text-secondary">
-                          <%= movie["year"] %>
-                        </span>
-
-                        <% if movie["vote_average"].present? %>
-                          <span class="text-warning">
-                            <i class="fa-solid fa-star"></i>
-                            <%= movie["vote_average"].round(1) %>/10
-                          </span>
-                        <% end %>
-
-                      </div>
-
-                      <!-- Synopsis -->
-
-                      <p class="card-text">
-                        <%= truncate(movie["overview"].to_s, length: 150) %>
-                      </p>
-
-                      <hr>
-
-                      <!-- Justification du LLM -->
-
-                      <h6>
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        Pourquoi ce film ?
-                      </h6>
-
-                      <p class="card-text">
-                        <%= movie["reason"] %>
-                      </p>
-                      <% if movie["api_endpoint"].present? %>
-
-                      <% if current_user.movies.exists?(api_endpoint: movie["api_endpoint"]) %>
-
-                        <button class="btn btn-outline-danger w-100" disabled>
-                          <i class="fa-solid fa-heart"></i>
-                          Déjà enregistré
-                        </button>
-
-                      <% else %>
-
-                        <%= button_to movies_path,
-                            method: :post,
-                            params: {
-                              movie: {
-                                title: movie["title"],
-                                api_endpoint: movie["api_endpoint"]
-                              }
-                            },
-                            class: "btn btn-outline-danger w-100" do %>
-
-                          <i class="fa-regular fa-heart"></i>
-                          Ajouter à mes films
-
-                        <% end %>
-
-                      <% end %>
-
-                    <% end %>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              <% end %>
-
-            </div>
-
-          <% end %>
-
-        </div>
-
-      <% end %>
-
+      <%= render "messages/message", message: message %>
     <% end %>
-
   </div>
 
   <div id="new_message_container">
-
-    <%= simple_form_for [@chat, @message] do |f| %>
-
-      <%= f.input :content,
-          label: "Posez votre question",
-          required: true,
-          placeholder: "Quel film pourrais-je regarder ce soir ?" %>
-
-      <%= f.button :submit, "Envoyer", class: "btn btn-primary" %>
-
-    <% end %>
-
+    <%= render "messages/form", chat: @chat, message: @message %>
   </div>
 
 <div id="change_title">
-  <%= simple_form_for @chat do |f| %>
-    <%= f.input :title, placeholder: "", class: "$gray-500" %>
-    <%= f.button :submit, 'Changer le titre de cette conversation', class: 'btn btn-primary' %>
-  <% end %>
+  <%= render "messages/form2", chat: @chat %>
 </div>
