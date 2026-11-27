@@ -2,6 +2,9 @@ class MessagesController < ApplicationController
   require "json"
   require "open-uri"
 
+  require "json"
+  require "open-uri"
+
   SYSTEM_PROMPT = "
    Vous êtes un expert en cinéma.
     En tant que Moviedex, un assistant personnalisé
@@ -16,6 +19,7 @@ class MessagesController < ApplicationController
     Sinon donne un réponse à la question de l'utilisateur en format markdown,
     associé à la clé answer.
     Expliquez pourquoi chaque film correspond aux goûts de l'utilisateur.
+    la clé reason ne doit jamais rester vide !
     Évitez de répéter les recommandations précédentes, sauf si l'utilisateur le demande.
     Donnez la priorité à la demande actuelle de l'utilisateur.
     Si aucune préférence n'est indiquée, interrogez-le sur ses goûts.
@@ -81,8 +85,8 @@ class MessagesController < ApplicationController
     end
     response = ruby_llm_chat.ask(@message.content)
 
-    # Transformer la réponse du LLM en Hash
-    response_hash = JSON.parse(response.content)
+  # Transformer la réponse du LLM en Hash
+  response_hash = JSON.parse(response.content)
 
     # Récupérer les films recommandés
     @movies = response_hash["movies"] || []
@@ -108,8 +112,7 @@ class MessagesController < ApplicationController
       movie_data = api_response["results"].first
       next unless movie_data
 
-      next unless movie_data
-
+      # if movie_data
       movie["poster_path"] = movie_data["poster_path"]
       movie["overview"] = movie_data["overview"]
       movie["vote_average"] = movie_data["vote_average"]

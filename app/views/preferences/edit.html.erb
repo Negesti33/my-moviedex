@@ -1,0 +1,16 @@
+<%= simple_form_for current_user, url: preferences_path, method: :patch do |f| %>
+<%= f.input :preferences, as: :text, label: "Parlez-nous de vos goûts pour que votre assistant
+        cinéma vous propose des films qui vous ressemblent",
+        placeholder: "J'adore les comédies romantiques, Brad Pitt, les films de Spielberg et les films de moins de 2 heures..." %>
+
+<p class="text-secondary small">
+        <i class="fa-solid fa-lightbulb"></i>
+        Genres, acteurs, réalisateurs, durée idéale
+        et envies de découverte : dites-nous tout !
+      </p>
+
+<%= f.button :submit,
+          "Enregistrer mes préférences",
+          class: "btn btn-primary w-100" %>
+
+    <% end %>
