@@ -19,6 +19,7 @@ class MessagesController < ApplicationController
     Sinon donne un réponse à la question de l'utilisateur en format markdown,
     associé à la clé answer.
     Expliquez pourquoi chaque film correspond aux goûts de l'utilisateur.
+    la clé reason ne doit jamais rester vide !
     Évitez de répéter les recommandations précédentes, sauf si l'utilisateur le demande.
     Donnez la priorité à la demande actuelle de l'utilisateur.
     Si aucune préférence n'est indiquée, interrogez-le sur ses goûts.
@@ -111,8 +112,7 @@ class MessagesController < ApplicationController
       movie_data = api_response["results"].first
       next unless movie_data
 
-      next unless movie_data
-
+      # if movie_data
       movie["poster_path"] = movie_data["poster_path"]
       movie["overview"] = movie_data["overview"]
       movie["vote_average"] = movie_data["vote_average"]
