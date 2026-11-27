@@ -1,19 +1,32 @@
 <section class="home-hero">
-  <span class="badge-pill">✧ Tes films choisis par l'IA</span>
-
-  <h1 class="home-hero__title">Trouve ton prochain<br>film préféré.</h1>
+  <h1 class="home-hero__title">Vous ne savez pas quoi regarder ?</h1>
 
   <p class="home-hero__subtitle">
-    Moins chercher, plus regarder. Des films qui correspondent à tes goûts, à ton humeur et à ta personnalité.
+    Dites simplement ce qui vous fait envie, et votre assistant vous propose des films faits pour vous. Plus besoin de chercher pendant des heures.
   </p>
 
-  <%= button_to "Parler à mon assistant IA →", chats_path, method: :post,
+  <%= button_to "Commencer la discussion →", chats_path, method: :post,
       params: { recommendation: true },
       class: "btn-gradient" %>
+
+  <div class="home-envies">
+    <%= button_to "Un film qui fait rire", chats_path, method: :post,
+        params: { envie: "Quel film drôle je pourrais regarder ce soir ?" },
+        class: "home-envies__item" %>
+    <%= button_to "Une belle histoire d'amour", chats_path, method: :post,
+        params: { envie: "Quel film d'amour je pourrais regarder ce soir ?" },
+        class: "home-envies__item" %>
+    <%= button_to "Un grand classique", chats_path, method: :post,
+        params: { envie: "Quel grand classique je pourrais regarder ce soir ?" },
+        class: "home-envies__item" %>
+    <%= button_to "Un film pour se changer les idées", chats_path, method: :post,
+        params: { envie: "Quel film je pourrais regarder ce soir pour me changer les idées ?" },
+        class: "home-envies__item" %>
+  </div>
 </section>
 
 <section class="home-carousel">
-  <h2 class="home-carousel__title">Explore tout l'univers du cinéma</h2>
+  <h2 class="home-carousel__title">Laissez-vous inspirer</h2>
 
   <div class="home-carousel__track" data-controller="carousel">
     <%= image_tag "posters/grand-budapest-hotel.jpg", alt: "The Grand Budapest Hotel", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
@@ -23,5 +36,27 @@
     <%= image_tag "posters/la-la-land.jpg", alt: "La La Land", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
     <%= image_tag "posters/the-batman.jpg", alt: "The Batman", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
     <%= image_tag "posters/matrix.jpg", alt: "Matrix", class: "home-carousel__poster", data: { carousel_target: "poster" } %>
+  </div>
+</section>
+
+<section class="home-steps">
+  <h2 class="home-carousel__title">Comment ça marche</h2>
+
+  <div class="home-steps__list">
+    <div class="home-steps__item">
+      <span class="home-steps__number">1</span>
+      <h3>Dites ce qui vous fait envie</h3>
+      <p>Une comédie, un film qui fait pleurer, un acteur que vous aimez... écrivez-le comme vous le diriez à une amie.</p>
+    </div>
+    <div class="home-steps__item">
+      <span class="home-steps__number">2</span>
+      <h3>On vous propose des films</h3>
+      <p>Votre assistant vous conseille trois films et vous dit pourquoi ils vont vous plaire.</p>
+    </div>
+    <div class="home-steps__item">
+      <span class="home-steps__number">3</span>
+      <h3>Gardez vos préférés</h3>
+      <p>Ajoutez les films qui vous tentent dans « Mes films » pour les retrouver plus tard.</p>
+    </div>
   </div>
 </section>

@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
 
   def show
     @chat = current_user.chats.find(params[:id])
-    @message = Message.new
+    @message = Message.new(content: params[:envie])
   end
 
   def create
@@ -13,7 +13,7 @@ class ChatsController < ApplicationController
     @chat.user = current_user
     @chat.title = "Ma recherche du #{Time.now.strftime('%d %B %Y à %H:%M')}"
     if @chat.save
-      redirect_to chat_path(@chat)
+      redirect_to chat_path(@chat, envie: params[:envie])
     else
       render :index, status: :unprocessable_entity
     end
