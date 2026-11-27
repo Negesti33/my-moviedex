@@ -25,6 +25,7 @@ class MoviesController < ApplicationController
 
     if @movie.save
       redirect_back fallback_location: movies_path,
+                    status: :see_other,
                     notice: "Film ajouté à mes films."
     else
       redirect_back fallback_location: movies_path,
@@ -34,14 +35,8 @@ class MoviesController < ApplicationController
 
   def update
     @movie = current_user.movies.find(params[:id])
-
-    if @movie.update(seen_params)
-      redirect_to movies_path, status: :see_other
-    else
-      redirect_to movies_path,
-                  alert: "Impossible de modifier ce film.",
-                  status: :see_other
-    end
+    @movie.update!(seen_params)
+    redirect_to movies_path, status: :see_other
   end
 
   private

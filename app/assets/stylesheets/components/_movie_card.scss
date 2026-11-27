@@ -1,0 +1,137 @@
+// ==========================================
+// BOUTON LIKE - ROSE NÉON
+// ==========================================
+
+.movie-like-btn {
+  background: transparent;
+  border: 1px solid #ff365c;
+  color: #ff365c;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 54, 92, 0.08);
+    color: #ff365c;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  &.liked:disabled {
+    background: rgba(255, 54, 92, 0.15);
+    color: #ff5577;
+    border-color: #ff365c;
+    opacity: 1;
+    cursor: default;
+
+    box-shadow:
+      0 0 5px #ff365c,
+      0 0 15px rgba(255, 54, 92, 0.7),
+      inset 0 0 8px rgba(255, 54, 92, 0.3);
+
+    text-shadow: 0 0 8px #ff365c;
+    animation: neon-light 0.6s ease-out;
+
+    i {
+      animation: heart-pop 0.5s ease-out;
+    }
+  }
+}
+
+// ==========================================
+// ANIMATION DU NÉON
+// ==========================================
+
+@keyframes neon-light {
+  0% {
+    box-shadow: none;
+  }
+
+  50% {
+    box-shadow: 0 0 30px #ff365c;
+  }
+
+  100% {
+    box-shadow: 0 0 15px #ff365c;
+  }
+}
+
+// ==========================================
+// ANIMATION DU CŒUR
+// ==========================================
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(0.7);
+  }
+
+  50% {
+    transform: scale(1.4);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+// ==========================================
+// CARDS DES FILMS
+// ==========================================
+
+.movie-card {
+  max-width: 340px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+
+  .movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .card-text {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: 15px;
+  }
+
+  hr {
+    margin: 12px 0;
+  }
+
+  .movie-like-btn {
+    font-size: 14px;
+  }
+}
+
+// ==========================================
+// ACCESSIBILITÉ DES ANIMATIONS
+// ==========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .movie-like-btn,
+  .movie-like-btn.liked:disabled,
+  .movie-like-btn.liked:disabled i {
+    animation: none;
+    transition: none;
+  }
+}
