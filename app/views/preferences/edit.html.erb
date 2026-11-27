@@ -1,16 +1,55 @@
-<%= simple_form_for current_user, url: preferences_path, method: :patch do |f| %>
-<%= f.input :preferences, as: :text, label: "Parlez-nous de vos goûts pour que votre assistant
-        cinéma vous propose des films qui vous ressemblent.",
-        placeholder: "J'adore les comédies romantiques, Brad Pitt, les films de Spielberg et les films de moins de 2 heures..." %>
 
-<p class="text-secondary small">
-        <i class="fa-solid fa-lightbulb"></i>
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 80vh;">
+
+  <div class="card shadow-lg border-0 rounded-4 p-4 p-md-5 w-100"
+       style="max-width: 600px;">
+
+    <!-- Introduction -->
+
+    <div class="text-center mb-4">
+
+      <i class="fa-solid fa-clapperboard fa-3x text-primary mb-3"></i>
+
+      <h2 class="fw-bold mb-3">
+        Bienvenue sur My Moviedex !
+      </h2>
+
+      <p class="text-secondary">
+        Et si nous faisions connaissance avec vos goûts cinématographiques ?
+      </p>
+
+    </div>
+
+    <!-- Formulaire des préférences -->
+
+    <%= simple_form_for current_user, url: preferences_path, method: :patch do |f| %>
+
+      <%= f.input :preferences,
+          as: :text,
+          label: "Parlez-nous de vos goûts pour que votre assistant cinéma vous propose des films qui vous ressemblent.",
+          placeholder: "J'adore les comédies romantiques, Brad Pitt, les films de Spielberg et les films de moins de 2 heures...",
+          input_html: { rows: 5 } %>
+
+      <p class="text-secondary small mb-4">
+        <i class="fa-solid fa-lightbulb text-primary"></i>
         Genres, acteurs, réalisateurs, durée idéale
         et envies de découverte : dites-nous tout !
       </p>
 
-<%= f.button :submit,
+      <%= f.button :submit,
           "Enregistrer mes préférences",
-          class: "btn btn-primary w-100" %>
+          class: "btn btn-primary w-100 rounded-3 py-2" %>
 
     <% end %>
+
+    <!-- Information complémentaire -->
+
+    <p class="text-secondary text-center small mt-4 mb-0">
+      Vous pourrez modifier vos préférences à tout moment
+      en discutant avec votre assistant.
+    </p>
+
+  </div>
+
+</div>
