@@ -1,0 +1,8 @@
+<%= simple_form_for chat do |f| %>
+  <div class="d-flex align-items-end gap-2 mt-2">
+    <div class="flex-grow-1">
+      <%= f.input :title, label: "Changer le titre de cette conversation", class: "$gray-500" %>
+    </div>
+    <%= f.button :submit, 'Changer', class: 'btn-gradient btn-gradient--form mb-3' %>
+  </div>
+<% end %>
