@@ -1,4 +1,6 @@
+
 <% if message.role == "user" %>
+
   <div class="d-flex justify-content-end mb-2">
     <div class="bg-white px-3 pb-0 pt-3 rounded-pill">
       <%= sanitize(render_markdown(message.content)) %>
@@ -7,120 +9,128 @@
 
 <% elsif message.role == "assistant" %>
 
-        <% response_hash = JSON.parse(message.content) rescue { "answer" => message.content } %>
+  <% response_hash = JSON.parse(message.content) rescue { "answer" => message.content } %>
 
-        <div class="mb-5">
+  <div class="mb-5">
 
-          <!-- Réponse textuelle du LLM -->
+    <!-- Réponse textuelle du LLM -->
 
-          <div class="px-3 pt-3">
-            <%= sanitize(render_markdown(response_hash["answer"])) %>
-          </div>
+    <div class="px-3 pt-3">
+      <%= sanitize(render_markdown(response_hash["answer"])) %>
+    </div>
 
-          <!-- Conteneur des films recommandés -->
+    <!-- Conteneur des films recommandés -->
 
-          <% if response_hash["movies"].present? %>
+    <% if response_hash["movies"].present? %>
 
-            <div class="row g-4 mt-3">
+      <div class="row g-4 mt-3">
 
-              <% response_hash["movies"].each do |movie| %>
+        <% response_hash["movies"].each do |movie| %>
 
-                <div class="col-12 col-md-4">
+          <div class="col-12 col-md-4">
 
-                  <div class="card movie-card h-100 shadow-sm border-0">
+            <div class="card movie-card h-100 shadow-sm border-0">
 
-                    <!-- Affiche du film -->
+              <!-- Affiche du film -->
 
-                    <% if movie["poster_path"].present? %>
-                      <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}",
-                          class: "card-img-top movie-poster",
-                          alt: movie["title"] %>
-                    <% end %>
+              <% if movie["poster_path"].present? %>
+                <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}",
+                    class: "card-img-top movie-poster",
+                    alt: movie["title"] %>
+              <% end %>
 
-                    <div class="card-body">
+              <div class="card-body">
 
-                      <!-- Titre -->
+                <!-- Titre -->
 
-                      <h5 class="card-title">
-                        <%= movie["title"] %>
-                      </h5>
+                <h5 class="card-title">
+                  <%= movie["title"] %>
+                </h5>
 
-                      <!-- Année et note -->
+                <!-- Année et note -->
 
-                      <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex justify-content-between mb-3">
 
-                        <span class="text-secondary">
-                          <%= movie["year"] %>
-                        </span>
+                  <span class="text-secondary">
+                    <%= movie["year"] %>
+                  </span>
 
-                        <% if movie["vote_average"].present? %>
-                          <span class="text-warning">
-                            <i class="fa-solid fa-star"></i>
-                            <%= movie["vote_average"].round(1) %>/10
-                          </span>
-                        <% end %>
+                  <% if movie["vote_average"].present? %>
+                    <span class="text-warning">
+                      <i class="fa-solid fa-star"></i>
+                      <%= movie["vote_average"].round(1) %>/10
+                    </span>
+                  <% end %>
 
-                      </div>
+                </div>
 
-                      <!-- Synopsis -->
+                <!-- Synopsis -->
 
-                      <p class="card-text">
-                        <%= truncate(movie["overview"].to_s, length: 150) %>
-                      </p>
+                <p class="card-text">
+                  <%= truncate(movie["overview"].to_s, length: 150) %>
+                </p>
 
-                      <hr>
+                <hr>
 
-                      <!-- Justification du LLM -->
+                <!-- Justification du LLM -->
 
-                      <h6>
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        Pourquoi ce film ?
-                      </h6>
+                <h6>
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  Pourquoi ce film ?
+                </h6>
 
-                      <p class="card-text">
-                        <%= movie["reason"] %>
-                      </p>
-                      <% if movie["api_endpoint"].present? %>
+                <p class="card-text">
+                  <%= movie["reason"] %>
+                </p>
 
-                      <% if current_user.movies.exists?(api_endpoint: movie["api_endpoint"]) %>
+                <!-- Bouton Like -->
 
-                        <button class="btn btn-outline-danger w-100" disabled>
-                          <i class="fa-solid fa-heart"></i>
-                          Déjà enregistré
-                        </button>
+                <% if movie["api_endpoint"].present? %>
 
-                      <% else %>
+                  <%= turbo_frame_tag "like_#{message.id}_#{movie['api_endpoint']}" do %>
 
-                        <%= button_to movies_path,
-                            method: :post,
-                            params: {
-                              movie: {
-                                title: movie["title"],
-                                api_endpoint: movie["api_endpoint"]
-                              }
-                            },
-                            class: "btn btn-outline-danger w-100" do %>
+                    <% if current_user.movies.exists?(api_endpoint: movie["api_endpoint"]) %>
 
-                          <i class="fa-regular fa-heart"></i>
-                          Ajouter à mes films
+                      <button class="movie-like-btn liked w-100" disabled>
+                        <i class="fa-solid fa-heart"></i>
+                        Déjà enregistré
+                      </button>
 
-                        <% end %>
+                    <% else %>
+
+                      <%= button_to movies_path,
+                          method: :post,
+                          params: {
+                            movie: {
+                              title: movie["title"],
+                              api_endpoint: movie["api_endpoint"]
+                            }
+                          },
+                          class: "movie-like-btn w-100" do %>
+
+                        <i class="fa-regular fa-heart"></i>
+                        Ajouter à mes films
 
                       <% end %>
 
                     <% end %>
-                    </div>
 
-                  </div>
+                  <% end %>
 
-                </div>
+                <% end %>
 
-              <% end %>
+              </div>
 
             </div>
 
-          <% end %>
+          </div>
 
-        </div>
+        <% end %>
 
-      <% end %>
+      </div>
+
+    <% end %>
+
+  </div>
+
+<% end %>

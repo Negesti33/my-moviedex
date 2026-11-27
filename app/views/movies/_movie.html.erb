@@ -21,7 +21,14 @@
     <hr>
 
     <%= simple_form_for movie,
-    html: { data: { controller: "seen" } } do |f| %>
+    url: movie_path(movie),
+    method: :patch,
+    html: {
+      data: {
+        controller: "seen",
+        turbo: false
+      }
+    } do |f| %>
 
   <%= f.input :seen,
       as: :boolean,
@@ -30,7 +37,7 @@
         data: { action: "change->seen#update" }
       } %>
 
-  <% end %>
+<% end %>
 
   </div>
 
