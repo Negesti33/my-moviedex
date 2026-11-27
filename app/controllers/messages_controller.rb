@@ -111,6 +111,8 @@ class MessagesController < ApplicationController
       movie_data = api_response["results"].first
       next unless movie_data
 
+      next unless movie_data
+
       movie["poster_path"] = movie_data["poster_path"]
       movie["overview"] = movie_data["overview"]
       movie["vote_average"] = movie_data["vote_average"]
