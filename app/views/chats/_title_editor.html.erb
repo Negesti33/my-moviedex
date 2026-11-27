@@ -1,0 +1,24 @@
+<div id="chat_title_editor" data-controller="chat-title">
+  <div id="chat_title"
+    data-chat-title-target="title"
+    class="<%= 'd-none' if local_assigns[:editing] %>"
+    >
+    <h1 class="text-center mt-4">
+      <%= chat.title %>
+      <abbr title='Modifier le titre'>
+        <i class="fa-solid fa-pen-to-square icon-gradient align-top"
+          role="button"
+          data-action="click->chat-title#edit">
+        </i>
+      </abbr>
+    </h1>
+  </div>
+
+  <div id="change_title"
+    data-chat-title-target="form"
+    class="<%= 'd-none' unless local_assigns[:editing] %>"
+    >
+    <%= render "chats/form_change_title", chat: chat %>
+  </div>
+
+</div>
