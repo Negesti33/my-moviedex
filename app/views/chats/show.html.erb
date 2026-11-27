@@ -1,29 +1,33 @@
-  <%= link_to root_path, class: "text-decoration-none" do %>
-    <i class="fa-solid fa-arrow-left"></i>
-    Retour à l'accueil
-  <% end %>
+<div class="hero-bg">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between">
+      <%= link_to root_path, class: "text-decoration-none" do %>
+      <i class="fa-solid fa-arrow-left"></i>
+        Retour à l'accueil
+      <% end %>
+      <%= link_to chats_path, class: "text-decoration-none" do %>
+        Retour à mes tchats
+      <i class="fa-solid fa-arrow-right"></i>
+      <% end %>
+    </div>
 
-  <h1 id="chat_title" class="text-center mt-4">
-    <%= @chat.title %>
-  </h1>
+    <%# affichage du titre modifiable %>
+    <%= render "chats/title_editor", chat: @chat %>
 
+    <div class="text-center my-5">
+      <h2 class="text-secondary">
+        Découvrez les films sélectionnés selon vos goûts.
+      </h2>
+    </div>
 
-  <div class="text-center my-5">
-    <p class="text-secondary">
-      Découvrez les films sélectionnés selon vos goûts.
-    </p>
+    <div id="messages">
+      <% @chat.messages.order(:created_at).each do |message| %>
+        <%= render "messages/message", message: message %>
+      <% end %>
+    </div>
+
+    <div id="new_message_container">
+      <%= render "messages/form", chat: @chat, message: @message %>
+    </div>
   </div>
-
-  <div id="messages">
-    <% @chat.messages.order(:created_at).each do |message| %>
-      <%= render "messages/message", message: message %>
-    <% end %>
-  </div>
-
-  <div id="new_message_container">
-    <%= render "messages/form", chat: @chat, message: @message %>
-  </div>
-
-<div id="change_title">
-  <%= render "messages/form2", chat: @chat %>
-</div>
+<div>
