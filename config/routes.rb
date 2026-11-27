@@ -17,4 +17,5 @@ Rails.application.routes.draw do
     resources :messages, only: [:create, :destroy]
   end
   resources :movies, except: [:new, :edit, :update]
+  resource :preferences, only: [:edit, :update]
 end

@@ -11,4 +11,12 @@ class ApplicationController < ActionController::Base
     # For additional in app/views/devise/registrations/edit.html.erb
     devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name])
   end
+  #    if resource.preferences.blank?
+  #   edit_user_registration_path
+  # else
+  #   super
+  # end
+  def after_sign_in_path_for(resource)
+    resource.preferences.blank? ? edit_preferences_path : super
+  end
 end
