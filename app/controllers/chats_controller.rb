@@ -5,15 +5,17 @@ class ChatsController < ApplicationController
 
   def show
     @chat = current_user.chats.find(params[:id])
-    @message = Message.new
+    @message = Message.new(content: params[:envie])
   end
 
   def create
     @chat = Chat.new
     @chat.user = current_user
-    @chat.title = "Ma recherche du #{Time.now.strftime('%d %B %Y à %H:%M')}"
+    date = Time.now
+    mois = %w[janvier février mars avril mai juin juillet août septembre octobre novembre décembre][date.month - 1]
+    @chat.title = "Ma recherche du #{date.strftime('%d')} #{mois} #{date.strftime('%Y à %H:%M')}"
     if @chat.save
-      redirect_to chat_path(@chat)
+      redirect_to chat_path(@chat, envie: params[:envie])
     else
       render :index, status: :unprocessable_entity
     end
@@ -23,7 +25,10 @@ class ChatsController < ApplicationController
     @chat = current_user.chats.find(params[:id])
     @chat.title = chat_params[:title]
     if @chat.save
-      redirect_to chat_path(@chat)
+      respond_to do |format|
+        format.html { redirect_to chat_path(@chat) }
+        format.turbo_stream
+      end
     else
       render :show, status: :unprocessable_entity
     end
@@ -32,7 +37,7 @@ class ChatsController < ApplicationController
   def destroy
     @chat = current_user.chats.find(params[:id])
     @chat.destroy
-    window.location.reload
+    redirect_to chats_path
   end
 
   private

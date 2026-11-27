@@ -1,7 +1,13 @@
 <%= simple_form_for [chat, message] do |f| %>
-  <%= f.input :content,
-    label: "Posez votre question",
-    required: true,
-    placeholder: "Quel film pourrais-je regarder ce soir ?" %>
-  <%= f.button :submit, "Envoyer", class: "btn btn-primary" %>
+  <div class="d-flex align-items-end gap-2">
+    <div class="flex-grow-1">
+      <%= f.input :content,
+        label: "Posez votre question <abbr title='Ce champ est obligatoire'>*</abbr>".html_safe,
+        required: true,
+        label_html: { class: "custom-required-label" },
+        placeholder: "Quel film pourrais-je regarder ce soir ?"
+      %>
+    </div>
+    <%= f.button :submit, "Envoyer", class: "btn-gradient btn-gradient--form mb-3" %>
+  </div>
 <% end %>
