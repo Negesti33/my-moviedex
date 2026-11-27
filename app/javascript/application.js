@@ -3,3 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
+
+import ChangeChatController from "./controllers/change_chat_controller.js"
+Stimulus.register("change-chat", ChangeChatController)

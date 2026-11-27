@@ -32,7 +32,7 @@ class ChatsController < ApplicationController
   def destroy
     @chat = current_user.chats.find(params[:id])
     @chat.destroy
-    window.location.reload
+    redirect_to chats_path
   end
 
   private
