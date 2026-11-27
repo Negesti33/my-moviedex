@@ -9,7 +9,7 @@ export default class extends Controller {
   static values = { url: String };
 
   connect() {
-    // pptionnel : récupérer la position dès l'arrivée sur la page
+    // optionnel : récupérer la position dès l'arrivée sur la page
     // this.locate();
   }
 
